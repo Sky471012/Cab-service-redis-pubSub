@@ -17,9 +17,9 @@ Redis Pub/Sub (publisher / subscriber) is a **messaging pattern** built into Red
 
 ### Publisher vs Subscriber
 
-| Role | What it does | In this project |
-|------|--------------|-----------------|
-| **Publisher** | Sends messages to a channel | `server.js` (Express API) |
+| Role           | What it does                                | In this project                                                         |
+|----------------|---------------------------------------------|-------------------------------------------------------------------------|
+| **Publisher**  | Sends messages to a channel                 | `server.js` (Express API)                                               |
 | **Subscriber** | Listens on a channel and reacts to messages | `subscriber.js`, `notificationSubscriber.js`, `monitoringSubscriber.js` |
 
 The publisher does not know who is listening, and subscribers do not know who is publishing.
@@ -67,21 +67,6 @@ independent subscribers receive it. Each one reacts in its own way.
 
    If you need durability, you want something else — for example **Redis Streams**,
    **RabbitMQ**, or **Kafka**.
-
-### How this differs from RabbitMQ and Kafka (basic level)
-
-| | Redis Pub/Sub | RabbitMQ | Kafka |
-|---|---|---|---|
-| **Delivery** | Fire-and-forget to live subscribers | Push to consumers, with acks | Append-only log, consumers pull |
-| **Durability** | None — messages vanish | Messages persist until acknowledged | Messages retained for a configurable time |
-| **Replay** | No | No (unless you use quorum queues / streams) | Yes — re-read from an offset |
-| **Order** | Per channel, best effort | Per queue | Per partition |
-| **Complexity** | Very simple | Moderate broker | Distributed streaming platform |
-| **Best for** | Live notifications, cache invalidation, real-time broadcasts | Task queues, RPC, reliable job delivery | Event sourcing, analytics, replayable event history |
-
-**Rule of thumb:** use Redis Pub/Sub when it is acceptable to lose a message if a
-service is offline. Use RabbitMQ/Kafka when every message must be processed.
-
 ---
 
 ## Project structure
@@ -197,12 +182,12 @@ it will not receive the missed message. That is Redis Pub/Sub.
 
 ## npm scripts
 
-| Script | Command | Purpose |
-|--------|---------|---------|
-| `npm start` | `node server.js` | Runs the Express publisher API |
-| `npm run subscriber` | `node subscriber.js` | Runs the Ride State Service |
-| `npm run notifications` | `node notificationSubscriber.js` | Runs the Notification Service |
-| `npm run monitoring` | `node monitoringSubscriber.js` | Runs the Monitoring Service |
+| Script                  | Command                          | Purpose                        |
+|-------------------------|----------------------------------|--------------------------------|
+| `npm start`             | `node server.js`                 | Runs the Express publisher API |
+| `npm run subscriber`    | `node subscriber.js`             | Runs the Ride State Service    |
+| `npm run notifications` | `node notificationSubscriber.js` | Runs the Notification Service  |
+| `npm run monitoring`    | `node monitoringSubscriber.js`   | Runs the Monitoring Service    |
 
 ## API
 
